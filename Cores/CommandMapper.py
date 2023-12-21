@@ -1,0 +1,1 @@
+# Strictly Mapping Commands to Functions, with alias, no extra functionalities

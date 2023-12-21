@@ -1,0 +1,1 @@
+# base script for utilising all the cores
