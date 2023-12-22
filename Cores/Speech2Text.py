@@ -12,36 +12,6 @@ import queue
 import argparse
 import os
 
-class stt:
-    cheetahAPI = ""
-    handle = None
-    audio_stream = None
-
-    def __init__(self, api, pause_duration=0.5):
-        self.cheetagAPI = "xUXq9Qp9l+VEivo6nq8217aVEHjW4469z3fY/pHZVJnigZRrLLF2YQ=="
-        self.handle = pvcheetah.create(access_key=api, endpoint_duration_sec=0.5)
-        self.audio_stream = pyaudio.PyAudio().open(
-            rate=self.handle.sample_rate,
-            channels=1,
-            format=pyaudio.paInt16,
-            input=True,
-            frames_per_buffer=self.handle.frame_length
-        )
-
-    def get_handle(self):
-        return self.handle
-
-    def get_next_audio_frame(self, frame_length):
-        return np.frombuffer(self.audio_stream.read(frame_length), np.int16)
-
-    def get_partial_transcript(self):
-        return self.handle.process(self.get_next_audio_frame(self.handle.frame_length))
-
-    def flush(self):
-        return self.handle.flush()
-
-
-
 if __name__ == '__main__':
 
     q = queue.Queue()
