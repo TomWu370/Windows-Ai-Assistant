@@ -1,4 +1,5 @@
-# Default ignored files
+/.idea
+/importedModule.txt
 /shelf/
 /workspace.xml
 /.idea
