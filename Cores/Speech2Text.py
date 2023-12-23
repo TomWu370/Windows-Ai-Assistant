@@ -65,13 +65,8 @@ if __name__ == '__main__':
 
         if args.model is None:
             model = Model('./modelMedium',lang="en-us")
-        else:
-            model = Model(lang=args.model)
 
-        if args.filename:
-            dump_fn = open(args.filename, "wb")
-        else:
-            dump_fn = None
+        SetLogLevel(-2)
 
         with sd.RawInputStream(samplerate=args.samplerate, blocksize=8000, device=args.device,
                                dtype="int16", channels=1, callback=callback):
@@ -81,18 +76,22 @@ if __name__ == '__main__':
 
             rec = KaldiRecognizer(model, args.samplerate)
 
+
             while True:
                 start = time.time()
                 data = q.get()
                 if rec.AcceptWaveform(data):
                     result = rec.Result()[14:-3]
+                    # remove ghost the from string, 0.21 might fix
+                    result = result.lower() if not result[0:4] == 'the' else result[4:]
+
                     match result:
-                        case "open notepad":
+                        case "open notepad" | 'open note pad':
                             end = time.time()
                             subprocess.Popen('notepad.exe')
                             print("opening")
                             print(end - start)
-                        case "close notepad":
+                        case "close notepad" | 'close note pad':
                             for proc in psutil.process_iter():
                                 # check whether the process name matches
                                 if proc.name() == "notepad.exe":
@@ -108,12 +107,6 @@ if __name__ == '__main__':
                         case _:
                             print(result)
 
-
-
-
-
-                if dump_fn is not None:
-                    dump_fn.write(data)
 
     except KeyboardInterrupt:
         print("\nDone")
