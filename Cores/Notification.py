@@ -4,9 +4,8 @@
 
 class Notification:
 
-
-
-
+    def __init__(self, tts):
+        self.tts = tts
 
 
     def Notify(self, message):
@@ -20,3 +19,10 @@ class Notification:
     def Alert(self, message):
         print(message)
         return None
+
+    def pause(self):
+        self.tts.pause()
+
+    def resume(self):
+        self.tts.resume()
+
