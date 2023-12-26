@@ -7,7 +7,8 @@ import importlib
 commandAlias = {}
 commandToFunc = {}
 
-def mapCommands(commands, pathHeader = "Modules."):
+
+def mapCommands(commands, pathHeader="Modules."):
     for command, func, aliases in commands:
         for alias in aliases:
             commandAlias[alias] = command
@@ -15,9 +16,11 @@ def mapCommands(commands, pathHeader = "Modules."):
         commandToFunc[command] = importlib.import_module(pathHeader + func)
     return commandAlias, commandToFunc
 
+
 def loadPlugins(commands):
     # sometimes command might conflict with existing commands, warn user after replacing command with plugin
     return mapCommands(commands, "Plugins.")
+
 
 def readCommands():
     for command in commandToFunc.keys():
