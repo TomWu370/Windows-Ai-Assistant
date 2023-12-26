@@ -5,7 +5,7 @@ from RealtimeTTS import TextToAudioStream, SystemEngine, AzureEngine, Elevenlabs
 
 
 class TextToSpeech:
-    def __init__(self, voice):
+    def __init__(self, voice="Zira"):
         self.voice = voice
         system = SystemEngine(voice=voice, print_installed_voices=True)  # replace with your TTS engine
         self.engine = TextToAudioStream(system)
