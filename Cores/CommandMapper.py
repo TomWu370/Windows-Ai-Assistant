@@ -23,6 +23,7 @@ class CommandMapper:
                 self.commandAlias[alias] = command
             # might have issues with importing from different directories, therefore might need to use absolute path
             self.commandToFunc[command] = importlib.import_module(pathHeader + func)
+            break
         return None
 
     def loadPlugins(self, commands):
@@ -35,3 +36,5 @@ class CommandMapper:
 
 if __name__ == '__main__':
     commandMapper = CommandMapper()
+    commandMapper.commandToFunc["openCommand"].open('notepad')
+    commandMapper.commandToFunc["openCommand"].open('notepad')
