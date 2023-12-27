@@ -3,6 +3,7 @@ import queue
 import subprocess
 import sys
 
+from Cores.CommandMapper import CommandMapper
 from Cores.Speech2Text import stt
 from Cores.Text2Speech import TextToSpeech
 import sounddevice as sound
@@ -11,6 +12,7 @@ import psutil
 if __name__ == '__main__':
     try:
         # need to change path according to where file is run/ use os for absolute path
+        commands = CommandMapper()
         speech2Text = stt(model_path="./Cores/modelMedium", language="en-us", log_level=-1)
         text2Speech = TextToSpeech()
         with speech2Text.audio_stream:
