@@ -36,5 +36,5 @@ class CommandMapper:
 
 if __name__ == '__main__':
     commandMapper = CommandMapper()
-    commandMapper.commandToFunc["openCommand"].open('notepad')
-    commandMapper.commandToFunc["openCommand"].open('notepad')
+    commandMapper.commandToFunc["openCommand"].launch('notepad')
+    commandMapper.commandToFunc["openCommand"].launch('notepad')
