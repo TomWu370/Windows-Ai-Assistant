@@ -34,6 +34,7 @@ class CommandMapper:
         for command in self.commandToFunc.keys():
             print(command)
 
+
 if __name__ == '__main__':
     commandMapper = CommandMapper()
     commandMapper.commandToFunc["openCommand"].launch('notepad')

@@ -3,14 +3,15 @@
 # there would be mapper to from different exe names to exe locations, as well as another map to aliases
 import getpass
 import os
-import struct
-import subprocess
 import locale
-from datetime import time
+import struct
 
 from win32comext.shell import shell, shellcon
 
+# hard coded window programs because can't be fetched for argumented shortcuts
+# there are some weird links that can't get path, so warn user that it's not comprehensive list
 exes = {'notepad': 'notepad.exe', 'note pad': 'notepad.exe'}
+
 print("hi")
 
 
@@ -25,10 +26,6 @@ def mapExecutables():
     exes = {}
 
     return exes.keys()
-
-
-import locale
-import struct
 
 def readLink(path):
     # http://stackoverflow.com/a/28952464/1119602
@@ -64,13 +61,15 @@ def get_exe_path():
     print(username)
     print(shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_COMMON_STARTMENU))
     print(shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_STARTMENU))
-    start_menu = f'C:\\Users\\{username}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs'
+    start_menu = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_COMMON_STARTMENU)
 
     for subdir, dirs, files in os.walk(start_menu):
         for file in files:
             if file.endswith('.lnk'):
                 link = readLink(f'{subdir}\{file}')
-                print(link)
+
+                print(f' link ',link)
+                # if not uninstall or uni or unis in file name start
                 # improveme
                 if file in exes:
                     pass
