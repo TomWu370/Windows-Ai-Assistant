@@ -15,7 +15,7 @@ exes = {'notepad': 'notepad.exe', 'note pad': 'notepad.exe'}
 print("hi")
 
 
-def launch(executable):
+def main(executable):
     match executable:
         case "notepad" | 'note pad':
             os.startfile(exes[executable])

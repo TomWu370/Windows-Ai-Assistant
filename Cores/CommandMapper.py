@@ -14,7 +14,7 @@ class CommandMapper:
 
     def getCommands(self):
         # read commands from file
-        return [["openCommand", "open", ["open", "moveto"]], ["pause", "pause", ["p"]], ["resume", "resume", ["r"]]]
+        return [["openCommand", "launch", ["open", "moveto"]], ["pause", "pause", ["p"]], ["resume", "resume", ["r"]]]
 
     def mapCommands(self, commands, pathHeader="Modules."):
         for command, func, aliases in commands:
@@ -34,8 +34,12 @@ class CommandMapper:
         for command in self.commandToFunc.keys():
             print(command)
 
+    def runCommand(self, command, args):
+        # default to using the main method
+        self.commandToFunc[command].main(args)
+
 
 if __name__ == '__main__':
     commandMapper = CommandMapper()
-    commandMapper.commandToFunc["openCommand"].launch('notepad')
-    commandMapper.commandToFunc["openCommand"].launch('notepad')
+    commandMapper.commandToFunc["openCommand"].main('notepad')
+    commandMapper.commandToFunc["openCommand"].main('notepad')
