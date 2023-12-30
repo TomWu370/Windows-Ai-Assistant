@@ -17,6 +17,8 @@ if __name__ == '__main__':
         text2Command = TextToCommand(commandMapper.commandToFunc)
         speech2Text = stt(model_path="./Cores/modelMedium", language="en-us", log_level=-1)
         text2Speech = TextToSpeech()
+        # create a wrapper that wraps all the cores together, then pass as argument, alowing plugins or modules to use
+        # called context or something else
         with speech2Text.audio_stream:
             print("#" * 80)
             print("Press Ctrl+C to stop the recording")
@@ -27,11 +29,15 @@ if __name__ == '__main__':
                 # the whole match case will be replaced by a single function call to commandMapper
                 # match case would then occur inside specific functions, on a small scale
                 if text:
-                    commands = text2Command.getCommand(text)
+                    commands = text2Command.singleCommand(text)
                     print(commands)
-                    if len(commands) > 0:
+                    if commands:
                         for command, args in commands:
-                            commandMapper.runCommand(command, args)
+                            # when finishing command, it may return a string to be said
+                            # may pass the actual context object as argument1, passing by reference
+                            resultSpeech = commandMapper.runCommand(command, args)
+                            if resultSpeech:
+                                text2Speech.say(resultSpeech)
 
                     text2Speech.say(text)
 
