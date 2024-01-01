@@ -10,6 +10,7 @@ class AnimatedGifPlayer:
         self.current_frame_index = 0
 
         self.create_widgets()
+        self.play = True
 
     def create_widgets(self):
         self.canvas = tk.Canvas(self.root, width=self.frames[0].width, height=self.frames[0].height, background='white',
@@ -17,7 +18,6 @@ class AnimatedGifPlayer:
         self.canvas.pack()
 
         self.play_animation()
-        #self.canvas.pack()
 
     def load_gif(self, gif_path):
         image = Image.open(gif_path)
@@ -56,38 +56,25 @@ class AnimatedGifPlayer:
         return output
 
     def play_animation(self):
-        frame = self.frames[self.current_frame_index]
-        self.photo = ImageTk.PhotoImage(frame)
-        self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
+        # 1 time, create widget window and canvas
+        # if played again then location should just change
+        if self.play:
+            frame = self.frames[self.current_frame_index]
+            self.photo = ImageTk.PhotoImage(frame)
+            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
 
-        self.current_frame_index = (self.current_frame_index + 1) % len(self.frames)
+            self.current_frame_index = (self.current_frame_index + 1) % len(self.frames)
 
-        # Repeat the animation by calling the play_animation method after a delay
-        self.root.after(15, self.play_animation)  # 15 is the same as the normal playing speed
+            # Repeat the animation by calling the play_animation method after a delay
+            self.root.after(15, self.play_animation)  # 15 is the same as the normal playing speed
 
+    def pause_animation(self):
+        self.play = False
 
-# Example usage
-root = tk.Tk()
-root.title("Animated GIF Player")
+    def resume_animation(self):
+        self.play = True
 
-# Replace 'path/to/your/animated.gif' with the actual path to your GIF file
-gif_path = r"..\..\WindowUI\022Fl.gif"
-
-player = AnimatedGifPlayer(root, gif_path)
-root.config()
-# cursor='none' will hide the cursor when in contact with non transparent pixels which is cool
-# but interact is normally hidden without hiding cursor, as click goes through transparent pixels
-
-# Create a transparent window
-root.overrideredirect(True)
-root.wm_attributes('-transparentcolor', '#ffffff')
-
-# get screen width and height
-ws = root.winfo_screenwidth() # width of the screen
-hs = root.winfo_screenheight() # height of the screen
-# get height and weight of task bar, as well as position of task bar, then it'd be add or subtract
-
-# set the dimensions of the screen
-# and where it is placed
-root.geometry('+%d+%d'%(ws-player.frames[0].width, hs-player.frames[0].height))
-root.mainloop()
+    def stop_animation(self):
+        self.play = True
+        self.current_frame_index = 0
+        # destroy window
