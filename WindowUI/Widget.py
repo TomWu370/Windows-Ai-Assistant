@@ -49,7 +49,7 @@ def move_app(e):
   root.geometry(f'+{e.x_root}+{e.y_root}')
 
 def quitter(e):
-  root.quit()
+  root.quit() # destroys all children, destroy only kills current widget
   #root.destroy()
 
 # Create Fake Title Bar
