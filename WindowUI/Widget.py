@@ -50,7 +50,7 @@ def move_app(e):
 
 def quitter(e):
   root.quit() # destroys all children, destroy only kills current widget
-  #root.destroy()
+  #root.destroy() # destroy ends mainloop
 
 # Create Fake Title Bar
 # title_bar = tk.Frame(root, bg="darkgreen", relief="raised", bd=0)
