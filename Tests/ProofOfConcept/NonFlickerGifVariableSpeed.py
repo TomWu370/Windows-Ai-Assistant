@@ -1,4 +1,8 @@
+import multiprocessing
 import tkinter as tk
+from multiprocessing import Process
+from threading import Thread
+
 from PIL import Image, ImageTk, ImageSequence
 
 
@@ -12,12 +16,12 @@ class AnimatedGifPlayer:
         self.create_widgets()
 
     def create_widgets(self):
-        self.canvas = tk.Canvas(self.root, width=self.frames[0].width, height=self.frames[0].height, background='white',
-                                borderwidth=0, highlightthickness=0)
+        self.canvas = tk.Canvas(self.root, width=self.frames[0].width, height=self.frames[0].height,
+                                background='blue', borderwidth=0, highlightthickness=0)
         self.canvas.pack()
 
         self.play_animation()
-        #self.canvas.pack()
+        # self.canvas.pack()
 
     def load_gif(self, gif_path):
         image = Image.open(gif_path)
@@ -66,28 +70,34 @@ class AnimatedGifPlayer:
         self.root.after(15, self.play_animation)  # 15 is the same as the normal playing speed
 
 
-# Example usage
-root = tk.Tk()
-root.title("Animated GIF Player")
+def test():
+    # Example usage
+    root = tk.Tk()
+    root.title("Animated GIF Player")
 
-# Replace 'path/to/your/animated.gif' with the actual path to your GIF file
-gif_path = r"..\..\WindowUI\022Fl.gif"
+    # Replace 'path/to/your/animated.gif' with the actual path to your GIF file
+    gif_path = r"..\..\WindowUI\022Fl.gif"
 
-player = AnimatedGifPlayer(root, gif_path)
-root.config()
-# cursor='none' will hide the cursor when in contact with non transparent pixels which is cool
-# but interact is normally hidden without hiding cursor, as click goes through transparent pixels
+    player = AnimatedGifPlayer(root, gif_path)
+    root.config()
+    # cursor='none' will hide the cursor when in contact with non transparent pixels which is cool
+    # but interact is normally hidden without hiding cursor, as click goes through transparent pixels
 
-# Create a transparent window
-root.overrideredirect(True)
-root.wm_attributes('-transparentcolor', '#ffffff')
+    # Create a transparent window
+    root.overrideredirect(True)
+    root.wm_attributes('-transparentcolor', '#ffffff')
 
-# get screen width and height
-ws = root.winfo_screenwidth() # width of the screen
-hs = root.winfo_screenheight() # height of the screen
-# get height and weight of task bar, as well as position of task bar, then it'd be add or subtract
+    # get screen width and height
+    ws = root.winfo_screenwidth()  # width of the screen
+    hs = root.winfo_screenheight()  # height of the screen
+    # get height and weight of task bar, as well as position of task bar, then it'd be add or subtract
 
-# set the dimensions of the screen
-# and where it is placed
-root.geometry('+%d+%d'%(ws-player.frames[0].width, hs-player.frames[0].height))
-root.mainloop()
+    # set the dimensions of the screen
+    # and where it is placed
+    root.geometry('+%d+%d' % (ws - player.frames[0].width, hs - player.frames[0].height))
+    root.mainloop()
+
+if __name__ == '__main__':
+    multiprocessing.freeze_support()
+    thread = Process(target=test)
+    thread.start()
