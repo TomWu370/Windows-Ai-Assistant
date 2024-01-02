@@ -1,4 +1,5 @@
 import copy
+import multiprocessing
 import threading
 #from joblib import Parallel, delayed
 import time
@@ -8,34 +9,41 @@ from multiprocessing import Process
 
 
 class AnimatedGifPlayer:
-    def __init__(self, gif_path):
+    def __init__(self, gif_path, root, position):
         self.thread = None
         self.photo = None
         self.canvas = None
-        self.root = None
+        self.root = tk.Toplevel(root)
+        #self.root.overrideredirect(True)
+        self.root.transient(root)
+        # self.root.wm_attributes('-fullscreen', 'True')
+        #self.root.wm_attributes('-type', 'splash')
+        self.root.grab_set() # prevents dragging
         self.gif_path = gif_path
         self.frames = self.load_gif(gif_path)
         self.oddColour = None
         self.current_frame_index = 0
         self.play_state = True
         self.quit_state = False
+        self.position = position
 
     def create_widgets(self, position):
-        self.root = tk.Tk()
-        print("made root")
 
-        self.root.overrideredirect(True)
+        print("made root")
+        # self.root = tk.Tk()
+        # self.root.overrideredirect(True)
         # self.root.geometry("+500+500")
 
         # Create a transparent window
         # root.wm_attributes('-transparentcolor','#00ff00')
-        # self.root.attributes('-topmost', True)
+        self.root.attributes('-topmost', True)
 
         self.root.lift()
         self.root.config(bg='#ffffff')
         self.root.wm_attributes('-transparentcolor', 'white')
+        self.root.geometry("+0+-100")
 
-        self.canvas = tk.Canvas(self.root, width=self.frames[0].width, height=self.frames[0].height,
+        self.canvas = tk.Canvas(self.root, width=1920, height=1080,
                                 background='white', borderwidth=0, highlightthickness=0, bd=0)
         print("declared root")
         print(self.canvas.cget("background"))
@@ -83,7 +91,7 @@ class AnimatedGifPlayer:
         if self.play_state:
             frame = self.frames[self.current_frame_index]
             self.photo = ImageTk.PhotoImage(frame)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
+            self.canvas.create_image(self.position, 100, anchor=tk.NE, image=self.photo)
             # self.canvas.configure(background='white')
             self.current_frame_index = (self.current_frame_index + 1) % len(self.frames)
 
@@ -106,26 +114,26 @@ class AnimatedGifPlayer:
     def initialise_player(self, position):
         print("at init")
         self.create_widgets(position)
-        while not self.quit_state:
-            print(self.canvas.cget("background"))
-            print("finished create")
-            self.play_animation()
-            print("exited")
+        print(self.canvas.cget("background"))
+        print("finished create")
+        self.play_animation()
+        print("exited")
 
-            self.root.mainloop()
-            print("after loop")
+        #self.root.mainloop()
+        print("after loop")
 
     def play(self, position):
         # 1 time, create widget window and canvas
         # if played again then location should just change
-        # rather than having 1 object spawning multiple of the same animation
-        # it's better to have 1 object for 1 animation
-        # this way it's much simpler to stop particular animation
-        # if you want the same animation, just spawn multiple of the same object
+        self.position = position
         self.initialise_player(position)
-        #self.thread = threading.Thread(target=self.initialise_player, args=(position,))
+        #self.thread = Process(target=self.initialise_player, args=(position,))
         # print("starting")
         #self.thread.start()
+
+    def change(self, position):
+        self.position = position
+
 
     def pause_animation(self):
         self.play_state = False
@@ -135,7 +143,7 @@ class AnimatedGifPlayer:
 
     def stop_animation(self):
         self.quit_state = True
-        return AnimatedGifPlayer(self.gif_path)
+
 
 
 if __name__ == '__main__':
@@ -143,12 +151,12 @@ if __name__ == '__main__':
     gif = AnimatedGifPlayer(r'bg-transparent.gif')
     gif2 = AnimatedGifPlayer(r'bg-transparent.gif')
     test = [gif, gif2]
-    gif.play("playing")
-    gif2.play("playing")
     #Parallel(n_jobs=2)(delayed(AnimatedGifPlayer.play)(gif, "playing") for gif in test)
-    # for gif in test:
-    #     gif.play("playing")
-
+    for gif in test:
+        Process(target=gif.play, args=("playing",)).start()
+        print("hi")
+    while True:
+        pass
     # gif.play("playing")
     # time.sleep(3)
     # gif2 = gif.stop_animation()
