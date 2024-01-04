@@ -1,0 +1,1 @@
+# don't respond to stage effect/gravity, only handles collisions

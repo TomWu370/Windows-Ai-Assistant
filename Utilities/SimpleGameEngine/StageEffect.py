@@ -1,0 +1,1 @@
+# applies a given list of stage effects, i.e. gravity, to a given list of objects

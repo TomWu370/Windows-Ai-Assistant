@@ -1,0 +1,1 @@
+# manages out of view objects and when to spawn them

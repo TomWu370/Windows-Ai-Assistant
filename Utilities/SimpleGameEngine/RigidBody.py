@@ -1,0 +1,1 @@
+# respond to stage effect/gravity as well as collision
