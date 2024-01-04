@@ -1,4 +1,4 @@
-# play animation and sync with tts
+# play animation, and detect clicks or other events, then play other animations
 
 class TextToModel:
     def __init__(self):

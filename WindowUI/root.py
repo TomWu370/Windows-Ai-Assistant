@@ -9,12 +9,12 @@ root.wm_attributes('-transparentcolor', 'white')
 root.title("hi")
 root.overrideredirect(True)
 
-gif = AnimatedGifPlayer("bg-transparent.gif", root, 500)
+gif = AnimatedGifPlayer("022Fl.gif", root, 500)
 
 gif.initialise_player(500)
 print("hi")
 
-gif2 = AnimatedGifPlayer("dancing-banana.gif", root, 300)
+gif2 = AnimatedGifPlayer("framework.gif", root, 300)
 gif2.initialise_player(300)
 # gif.change(400)
 #gif2.stop_animation()
