@@ -16,12 +16,12 @@ def isCollide2(obj1, obj2):
 
 
 if __name__ == "__main__":
-    class obj:
+    class Box:
         def __init__(self, x, y, width, height):
             self.x = x
             self.y = y
             self.width = width
             self.height = height
-    obj1 = obj(0, 0, 10, 10)
-    obj2 = obj(9, 10, 10, 10)
-    print(isCollide(obj1, obj2))
+    obj1 = Box(0, 0, 10, 10)
+    obj2 = Box(10, 10, 10, 10)
+    print(collision.collide(obj1, obj2))

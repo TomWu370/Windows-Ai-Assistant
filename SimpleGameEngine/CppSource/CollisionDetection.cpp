@@ -2,17 +2,34 @@
 using namespace std;
 namespace py = pybind11;
 
+// Define a C++ struct representing a box
+struct Box {
+    public:
+        Box(py::object obj) {
+            // Get the x, y, width and height of each object
+            x = obj.attr("x").cast<double>();
+            y = obj.attr("y").cast<double>();
+            width = obj.attr("width").cast<double>();
+            height = obj.attr("height").cast<double>();
+        }
+    double x;
+    double y;
+    double width;
+    double height;
+};
+
 // function
-bool collide(py::object a, py::object b) {
-    auto a_x = a.attr("x").cast<double>();
-    auto a_y = a.attr("y").cast<double>();
-    auto a_width = a.attr("width").cast<double>();
-    auto a_height = a.attr("height").cast<double>();
-    auto b_x = b.attr("x").cast<double>();
-    auto b_y = b.attr("y").cast<double>();
-    auto b_width = b.attr("width").cast<double>();
-    auto b_height = b.attr("height").cast<double>();
-    return a_x <= (b_x + b_width) && (a_x + a_width) >= b_x && a_y <= (b_y + b_height) && (a_y + a_height) >= b_y;
+bool collide(py::object a_obj, py::object b_obj) {
+    Box a = Box(a_obj);
+    Box b = Box(b_obj);
+
+    // Check for collision including touching surfaces
+    bool horizontal_overlap = (a.x <= (b.x + b.width) && (a.x + a.width) >= b.x) ||
+                              (b.x <= (a.x + a.width) && (b.x + b.width) >= a.x);
+    bool vertical_overlap = (a.y <= (b.y + b.height) && (a.y + a.height) >= b.y) ||
+                            (b.y <= (a.y + a.height) && (b.y + b.height) >= a.y);
+
+    return horizontal_overlap && vertical_overlap;
 }
 
 PYBIND11_MODULE(collision, m) {
