@@ -24,11 +24,15 @@ class Stage:
         # stage.move, which will invoke canvas.move inside GifPlayer which will move both object and hitbox
         # i guess also add bodies with hitbox, without hitbox, and bodies with hitbox but not affected by stage_effects
         # the whole stage, as the name indicates, once object are out of view, they are not processed
+        # by default the y coordinate will start at the bottom of the object, unless specified
+        # have a prototype hitbox, make it convenient to create, this way game makers can use that to check hitboxes
         # camera system
         # collision detection
         # 3 main object types
         # stage effects, gravity, etc
+        # for all rigid bodies, constant collision detection will be applied
         # persistence of world out of view, can be heavily borrowed from pygame maps
         # try a list of objects, with their coordinates, x,y, at which they start or end
         # when at start coordinate for atleast 1, spawn in object
         # may use quadmap for enironment that are not interactable objects, only for footings
+
