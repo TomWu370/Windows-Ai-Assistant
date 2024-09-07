@@ -30,7 +30,7 @@ class AnimatedGifPlayer:
         self.quit_state: bool = False
         self.position: ImagePosition = position
 
-    def create_widgets(self, position: int):
+    def create_widgets(self, position: int, color: str):
 
         print("made root")
         # self.root = tk.Tk()
@@ -42,7 +42,10 @@ class AnimatedGifPlayer:
         self.root.attributes('-topmost', True)
 
         self.root.lift()
-        self.root.config(bg='#ffffff')
+        if not color:
+            self.root.config(bg='#ffffff')
+        else:
+            self.root.config(bg=color)
         self.root.wm_attributes('-transparentcolor', 'white')
         self.root.geometry("+0+-100")
 
@@ -50,11 +53,29 @@ class AnimatedGifPlayer:
                                 background='white', borderwidth=0, highlightthickness=0, bd=0)
         print("declared root")
         print(self.canvas.cget("background"))
-        move_window = lambda event:  self.change(ImagePosition(self.root.winfo_pointerxy()[0], self.root.winfo_pointerxy()[1]))
-        self.root.bind("<B1-Motion>", move_window)
+
+        self.root.bind("<ButtonPress-1>", self.start_move)
+        self.root.bind("<ButtonRelease-1>", self.stop_move)
+        self.root.bind("<B1-Motion>", self.do_move)
         self.canvas.pack()
 
+    def start_move(self, event):
+        self.x = event.x
+        self.y = event.y
 
+    def stop_move(self, event):
+        self.x = None
+        self.y = None
+    
+    def do_move(self, event):
+        deltax = event.x - self.x
+        deltay = event.y - self.y
+        print(f"{deltax} {deltay} {event.x} {event.y} {self.x} {self.y} {self.position.x} {self.position.y}")
+        x =  deltax
+        y =  deltay
+        self.change(ImagePosition(self.position.x+x, self.position.y+y))
+        self.x += deltax
+        self.y += deltay
 
     def load_gif(self, gif_path: str):
         image = Image.open(gif_path)
@@ -121,7 +142,7 @@ class AnimatedGifPlayer:
 
     def initialise_player(self, position: ImagePosition):
         print("at init")
-        self.create_widgets(position)
+        self.create_widgets(position, "#777777")
         print(self.canvas.cget("background"))
         print("finished create")
         self.play_animation()
