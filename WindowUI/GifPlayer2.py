@@ -6,10 +6,13 @@ import time
 import tkinter as tk
 from PIL import Image, ImageTk, ImageSequence
 from multiprocessing import Process
-
+class ImagePosition:
+    def __init__(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
 
 class AnimatedGifPlayer:
-    def __init__(self, gif_path: str, root: tk, position: int):
+    def __init__(self, gif_path: str, root: tk, position: ImagePosition):
         self.thread = None
         self.photo = None
         self.canvas = None
@@ -25,9 +28,9 @@ class AnimatedGifPlayer:
         self.current_frame_index: int = 0
         self.play_state: bool = True
         self.quit_state: bool = False
-        self.position: int = position
+        self.position: ImagePosition = position
 
-    def create_widgets(self, position):
+    def create_widgets(self, position: int):
 
         print("made root")
         # self.root = tk.Tk()
@@ -47,8 +50,8 @@ class AnimatedGifPlayer:
                                 background='white', borderwidth=0, highlightthickness=0, bd=0)
         print("declared root")
         print(self.canvas.cget("background"))
-        #move_window = lambda event:  self.root.geometry(f'+{self.root.winfo_pointerxy()[0]}+{self.root.winfo_pointerxy()[1]}')
-        #self.root.bind("<B1-Click>", move_window)
+        move_window = lambda event:  self.change(ImagePosition(self.root.winfo_pointerxy()[0], self.root.winfo_pointerxy()[1]))
+        self.root.bind("<B1-Motion>", move_window)
         self.canvas.pack()
 
 
@@ -96,7 +99,7 @@ class AnimatedGifPlayer:
         if self.play_state:
             frame = self.frames[self.current_frame_index]
             self.photo = ImageTk.PhotoImage(frame)
-            self.canvas.create_image(self.position, 100, anchor=tk.NE, image=self.photo)
+            self.canvas.create_image(self.position.x, self.position.y, anchor=tk.NE, image=self.photo)
             # self.canvas.configure(background='white')
             self.current_frame_index = (self.current_frame_index + 1) % len(self.frames)
 
@@ -116,7 +119,7 @@ class AnimatedGifPlayer:
             self.root.destroy()
             # self.root = None
 
-    def initialise_player(self, position: int):
+    def initialise_player(self, position: ImagePosition):
         print("at init")
         self.create_widgets(position)
         print(self.canvas.cget("background"))
@@ -127,7 +130,7 @@ class AnimatedGifPlayer:
         #self.root.mainloop()
         print("after loop")
 
-    def play(self, position: int):
+    def play(self, position: ImagePosition):
         # 1 time, create widget window and canvas
         # if played again then location should just change
         self.position = position
@@ -136,8 +139,9 @@ class AnimatedGifPlayer:
         # print("starting")
         #self.thread.start()
 
-    def change(self, position: int):
-        self.position = position
+    def change(self, position: ImagePosition):
+        self.position.x = position.x
+        self.position.y = position.y
 
 
     def pause_animation(self):
