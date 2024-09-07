@@ -70,7 +70,6 @@ class AnimatedGifPlayer:
     def do_move(self, event):
         deltax = event.x - self.x
         deltay = event.y - self.y
-        print(f"{deltax} {deltay} {event.x} {event.y} {self.x} {self.y} {self.position.x} {self.position.y}")
         x =  deltax
         y =  deltay
         self.change(ImagePosition(self.position.x+x, self.position.y+y))
