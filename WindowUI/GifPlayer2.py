@@ -9,7 +9,7 @@ from multiprocessing import Process
 
 
 class AnimatedGifPlayer:
-    def __init__(self, gif_path, root, position):
+    def __init__(self, gif_path: str, root: tk, position: int):
         self.thread = None
         self.photo = None
         self.canvas = None
@@ -18,14 +18,14 @@ class AnimatedGifPlayer:
         self.root.transient(root)
         # self.root.wm_attributes('-fullscreen', 'True')
         #self.root.wm_attributes('-type', 'splash')
-        self.root.grab_set() # prevents dragging
-        self.gif_path = gif_path
+        #self.root.grab_set() # prevents dragging
+        self.gif_path: str = gif_path
         self.frames = self.load_gif(gif_path)
         self.oddColour = None
-        self.current_frame_index = 0
-        self.play_state = True
-        self.quit_state = False
-        self.position = position
+        self.current_frame_index: int = 0
+        self.play_state: bool = True
+        self.quit_state: bool = False
+        self.position: int = position
 
     def create_widgets(self, position):
 
@@ -47,10 +47,13 @@ class AnimatedGifPlayer:
                                 background='white', borderwidth=0, highlightthickness=0, bd=0)
         print("declared root")
         print(self.canvas.cget("background"))
+        #move_window = lambda event:  self.root.geometry(f'+{self.root.winfo_pointerxy()[0]}+{self.root.winfo_pointerxy()[1]}')
+        #self.root.bind("<B1-Click>", move_window)
         self.canvas.pack()
 
 
-    def load_gif(self, gif_path):
+
+    def load_gif(self, gif_path: str):
         image = Image.open(gif_path)
         # Get frames and disposal method for each frame
         frames = []
@@ -67,6 +70,7 @@ class AnimatedGifPlayer:
             thisFrame = loadedFrame
             # If the disposal method is 2
             if disposal[i] == 2:
+                print("disposal 2")
                 # Check that this is not the first frame
                 if i != 0:
                     # Pastes thisFrames opaque pixels over lastFrame and appends lastFrame to output
@@ -76,6 +80,7 @@ class AnimatedGifPlayer:
                     output.append(thisFrame)
             # If the disposal method is 1 or 0
             elif disposal[i] == 1 or disposal[i] == 0:
+                print("disposal 1")
                 # Appends thisFrame to output
                 output.append(thisFrame)
             # If disposal method if anything other than 2, 1, or 0
@@ -100,7 +105,7 @@ class AnimatedGifPlayer:
             #time.sleep(0.015)
             # key is this root, and the canvas to draw on
             # Repeat the animation by calling the play_animation method after a delay
-            self.root.after(15, self.play_animation)  # 15 is the same as the normal playing speed
+            self.root.after(30, self.play_animation)  # 15 is the same as the normal playing speed
 
         if self.quit_state:
             self.current_frame_index = 0
@@ -111,7 +116,7 @@ class AnimatedGifPlayer:
             self.root.destroy()
             # self.root = None
 
-    def initialise_player(self, position):
+    def initialise_player(self, position: int):
         print("at init")
         self.create_widgets(position)
         print(self.canvas.cget("background"))
@@ -122,7 +127,7 @@ class AnimatedGifPlayer:
         #self.root.mainloop()
         print("after loop")
 
-    def play(self, position):
+    def play(self, position: int):
         # 1 time, create widget window and canvas
         # if played again then location should just change
         self.position = position
@@ -131,7 +136,7 @@ class AnimatedGifPlayer:
         # print("starting")
         #self.thread.start()
 
-    def change(self, position):
+    def change(self, position: int):
         self.position = position
 
 
