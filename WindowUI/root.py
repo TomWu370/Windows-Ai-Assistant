@@ -11,7 +11,7 @@ root.wm_attributes('-transparentcolor', 'white')
 #root.wm_attributes('-toolwindow', True)
 #root.withdraw()
 root.title("hi")
-#root.overrideredirect(True)
+root.overrideredirect(True)
 
 gif = AnimatedGifPlayer("snoop.gif", root, ImagePosition(500, 100))
 
@@ -23,7 +23,8 @@ gif2.initialise_player(300)
 #gif.change(400)
 #gif2.stop_animation()
 #gif.stop_animation()
-
+gif3 = AnimatedGifPlayer("cat.gif", root, ImagePosition(1000, 100))
+gif3.initialise_player(100)
 def drop(event):
     # This function is called, when stuff is dropped into a widget
     gif3 = AnimatedGifPlayer(event.data, root, ImagePosition(1000, 100))
@@ -34,14 +35,11 @@ def drag_command(event):
     # it returns the drag type, the content type, and the actual content
     return (tkinterDnD.COPY, "DND_Text", "Some nice dropped text!")
 
-label_1 = tkinter.Label(root, textvar="s", relief="solid")
-label_1.pack(fill="both", expand=True, padx=10, pady=10)
+gif3.root.register_drop_target("*")
+gif3.root.bind("<<Drop>>", drop)
 
-label_1.register_drop_target("*")
-label_1.bind("<<Drop>>", drop)
-
-label_1.register_drag_source("*")
-label_1.bind("<<DragInitCmd>>", drag_command)
+gif3.root.register_drag_source("*")
+gif3.root.bind("<<DragInitCmd>>", drag_command)
 
 
 root.mainloop()
