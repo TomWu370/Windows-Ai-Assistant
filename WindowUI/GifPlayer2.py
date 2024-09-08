@@ -57,7 +57,22 @@ class AnimatedGifPlayer:
         self.root.bind("<ButtonPress-1>", self.start_move)
         self.root.bind("<ButtonRelease-1>", self.stop_move)
         self.root.bind("<B1-Motion>", self.do_move)
+        self.root.bind("<KeyPress>", self.on_enter)
         self.canvas.pack()
+
+    def on_enter(self, event: tk.Event):
+        print(event.keycode)
+        print(type(event))
+        if event.keycode == "A":
+            print("A")
+
+        ro: tk.Widget = event.widget
+        wo = ro.focus_get()
+        print(wo)
+        roo = ro.winfo_toplevel()
+        roo.destroy()
+        
+
 
     def start_move(self, event):
         self.x = event.x
@@ -66,6 +81,7 @@ class AnimatedGifPlayer:
     def stop_move(self, event):
         self.x = None
         self.y = None
+        print(event.widget)
     
     def do_move(self, event):
         deltax = event.x - self.x
@@ -103,7 +119,6 @@ class AnimatedGifPlayer:
                     output.append(thisFrame)
             # If the disposal method is 1 or 0
             elif disposal[i] == 1 or disposal[i] == 0:
-                print("disposal 1")
                 # Appends thisFrame to output
                 output.append(thisFrame)
             # If disposal method if anything other than 2, 1, or 0
