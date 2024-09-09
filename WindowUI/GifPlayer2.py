@@ -38,7 +38,7 @@ class AnimatedGifPlayer:
         # self.root.geometry("+500+500")
 
         # Create a transparent window
-        # root.wm_attributes('-transparentcolor','#00ff00')
+        self.root.wm_attributes('-transparentcolor','#00ff00')
         self.root.attributes('-topmost', True)
 
         self.root.lift()
@@ -47,9 +47,9 @@ class AnimatedGifPlayer:
         else:
             self.root.config(bg=color)
         self.root.wm_attributes('-transparentcolor', 'white')
-        self.root.geometry("+0+-100")
+        self.root.geometry("3840x1080--9+-61")
 
-        self.canvas = tk.Canvas(self.root, width=1920, height=1080,
+        self.canvas = tk.Canvas(self.root, width=3840, height=1080,
                                 background='white', borderwidth=0, highlightthickness=0, bd=0)
         print("declared root")
         print(self.canvas.cget("background"))
@@ -98,7 +98,8 @@ class AnimatedGifPlayer:
         frames = []
         disposal = []
         for gifFrame in ImageSequence.Iterator(image):
-            disposal.append(gifFrame.disposal_method)
+            # disposal.append(gifFrame.disposal_method)
+            disposal.append(1)
             frames.append(gifFrame.convert('P'))
         # Loop through frames, and edit them based on their disposal method
         output = []
